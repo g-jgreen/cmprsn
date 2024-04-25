@@ -17,19 +17,18 @@ func elementsInArray(checkElements []int, elements []int) int {
 		} else {
 			offset = 0
 		}
-		i = i + 1
+		i += 1
 	}
 	return -1
 }
 
-func main() {
-	// const text string = "I AM SAM. I AM SAM. SAM I AM"
-	const text string = "SAM SAM"
+func encoder(text string, bufferSize int) []interface{} {
 	textToBytes := []byte(text)
 
 	var searchBuffer []int
 	var checkChars []int
 	var i int = 0
+	var output []interface{}
 
 	for char := range textToBytes {
 		checkChars = append(checkChars, int(textToBytes[char]))
@@ -57,8 +56,21 @@ func main() {
 
 			checkChars = nil
 		}
+
+		if len(searchBuffer) == bufferSize {
+			searchBuffer = searchBuffer[1:]
+		}
+
 		searchBuffer = append(searchBuffer, int(textToBytes[char]))
 
-		i = i + 1
+		i += 1
 	}
+	return output
+}
+
+func main() {
+	const text string = "I AM SAM. I AM SAM. SAM I AM"
+	// const text string = "SAM SAM"
+	const bufferSize int = 4096
+	encoder(text, bufferSize)
 }
